@@ -1,0 +1,20 @@
+node{
+    def mavenHome = tool name:"maven 3.6.3"
+    stage('Checkout code'){
+        git branch: 'development', credentialsId: '8a8b09e7-96dd-4aca-8a80-c7f578fa6dd4', url: 'https://github.com/practiceJ/maven-web-application.git'
+    }
+    
+    stage('Build'){
+     sh "${mavenHome}/bin/mvn clean package"
+    }
+    
+    stage('Generate SQ report'){
+    sh "${mavenHome}/bin/mvn sonar:sonar"
+        
+    }
+    
+    stage('Store Artifact'){
+    sh "${mavenHome}/bin/mvn deploy"
+        
+    }
+}
